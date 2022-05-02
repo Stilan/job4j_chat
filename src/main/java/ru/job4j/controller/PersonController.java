@@ -3,9 +3,13 @@ package ru.job4j.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.model.Person;
+import ru.job4j.model.Role;
 import ru.job4j.repository.PersonRepository;
+import ru.job4j.repository.RoleRepository;
+
 
 import java.util.List;
 
@@ -13,14 +17,17 @@ import java.util.List;
 @RequestMapping("/person")
 public class PersonController {
 
-    @Autowired
-    private PersonRepository personRepository;
 
-    public PersonController(PersonRepository personRepository) {
+    private final PersonRepository personRepository;
+    private final BCryptPasswordEncoder encoder;
+
+
+    public PersonController(PersonRepository personRepository, BCryptPasswordEncoder encoder) {
         this.personRepository = personRepository;
+        this.encoder = encoder;
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public List<Person> findAll() {
         return (List<Person>) this.personRepository.findAll();
     }
@@ -34,8 +41,9 @@ public class PersonController {
         );
     }
 
-    @PostMapping("/")
+    @PostMapping("/sign-up")
     public ResponseEntity<Person> create(@RequestBody Person person) {
+        person.setPassword(encoder.encode(person.getPassword()));
         return new ResponseEntity<>(
                 this.personRepository.save(person),
                 HttpStatus.CREATED
@@ -52,4 +60,5 @@ public class PersonController {
         personRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
+    
 }

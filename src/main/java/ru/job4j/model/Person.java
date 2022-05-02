@@ -14,9 +14,9 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String password;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH,
-            CascadeType.REFRESH, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role roles ;
 
@@ -27,8 +27,6 @@ public class Person {
                     @JoinColumn(name = "rooms_id", nullable = false, updatable = false)})
     private Set<Room> messages = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
-    private Set<Message> messagesSet = new HashSet<>();
 
     public static Person of(String name) {
         Person person = new Person();
@@ -55,6 +53,14 @@ public class Person {
         this.name = name;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Role getRoles() {
         return roles;
     }
@@ -62,7 +68,6 @@ public class Person {
     public void setRoles(Role roles) {
         this.roles = roles;
     }
-
 
     @Override
     public boolean equals(Object o) {

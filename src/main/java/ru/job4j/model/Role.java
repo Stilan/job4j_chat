@@ -14,9 +14,6 @@ public class Role {
     private int id;
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "roles")
-    private Set<Person> personSet = new HashSet<>();
-
     public Role() {
     }
 

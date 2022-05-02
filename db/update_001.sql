@@ -1,6 +1,7 @@
 create table person (
     id serial primary key not null,
     name varchar(2000),
+    password varchar(2000),
     role_id integer not null references roles(id)
 );
 
@@ -26,9 +27,11 @@ create table person_rooms (
    rooms_id int not null references rooms(id)
 );
 
+drop table person;
+select * from person;
 
-insert into person (name, role_id)
-values ('Petr', 1);
+insert into person (name, password, role_id)
+values ('Petr', 'password', 1);
 
 insert into roles (name)
 values ('A');
@@ -40,3 +43,6 @@ values ('Hello word');
 
 insert into message (name, person_id)
 values ('tttt', 1);
+
+insert into person_rooms (person_id, rooms_id)
+values (1, 1);
