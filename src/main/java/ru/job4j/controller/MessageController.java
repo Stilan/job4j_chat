@@ -3,7 +3,9 @@ package ru.job4j.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.model.Message;
+import ru.job4j.model.Person;
 import ru.job4j.repository.MessageRepository;
 
 import java.util.List;
@@ -23,8 +25,19 @@ public class MessageController {
         return (List<Message>) this.messageRepository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Message> findById(@PathVariable int id) {
+        return ResponseEntity.badRequest().body(this.messageRepository.findById(id).
+                orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Message is not found. Please, check requisites.")));
+    }
+
     @PostMapping("/")
     public ResponseEntity<Message> create(@RequestBody Message message) {
+        String strName = message.getName();
+        if (strName == null) {
+            throw new NullPointerException("Message mustn't be empty");
+        }
         return new ResponseEntity<>(
                 this.messageRepository.save(message),
                 HttpStatus.CREATED

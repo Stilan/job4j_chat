@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.model.Person;
 import ru.job4j.model.Role;
 import ru.job4j.repository.PersonRepository;
@@ -34,15 +35,17 @@ public class PersonController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Person> findById(@PathVariable int id) {
-        var person = this.personRepository.findById(id);
-        return new ResponseEntity<Person>(
-                person.orElse(new Person()),
-                person.isPresent() ? HttpStatus.OK : HttpStatus.NOT_FOUND
-        );
+        return ResponseEntity.badRequest().body(this.personRepository.findById(id).
+                orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Person is not found. Please, check requisites.")));
     }
 
     @PostMapping("/sign-up")
     public ResponseEntity<Person> create(@RequestBody Person person) {
+        String strName = person.getName();
+        if (strName == null) {
+            throw new NullPointerException("Person mustn't be empty");
+        }
         person.setPassword(encoder.encode(person.getPassword()));
         return new ResponseEntity<>(
                 this.personRepository.save(person),
@@ -60,5 +63,7 @@ public class PersonController {
         personRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+
     
 }

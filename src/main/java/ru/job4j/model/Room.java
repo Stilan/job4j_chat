@@ -1,5 +1,7 @@
 package ru.job4j.model;
 
+import org.springframework.http.HttpStatus;
+
 import javax.persistence.*;
 
 @Entity
@@ -29,4 +31,5 @@ public class Room {
     public void setName(String name) {
         this.message = name;
     }
+
 }

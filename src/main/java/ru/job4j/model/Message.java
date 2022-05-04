@@ -27,11 +27,11 @@ public class Message {
         this.id = id;
     }
 
-    public String getMessage() {
+    public String getName() {
         return name;
     }
 
-    public void setMessage(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 

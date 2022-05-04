@@ -27,7 +27,7 @@ create table person_rooms (
    rooms_id int not null references rooms(id)
 );
 
-drop table person;
+drop table message;
 select * from person;
 
 insert into person (name, password, role_id)
