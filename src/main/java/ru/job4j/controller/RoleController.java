@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.model.Role;
+import ru.job4j.model.Room;
 import ru.job4j.repository.RoleRepository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +34,9 @@ public class RoleController {
     }
 
     @GetMapping("/")
-    public List<Role> findAll() {
-        return (List<Role>) this.roleRepository.findAll();
+    public ResponseEntity<List<Role>> findAll() {
+        List<Role> roleList = (List<Role>) this.roleRepository.findAll();
+        return  ResponseEntity.ok(roleList);
     }
 
     @GetMapping("/{id}")

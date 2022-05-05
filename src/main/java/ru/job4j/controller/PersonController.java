@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.model.Person;
 import ru.job4j.model.Role;
+import ru.job4j.model.Room;
 import ru.job4j.repository.PersonRepository;
 import ru.job4j.repository.RoleRepository;
 
@@ -28,9 +29,10 @@ public class PersonController {
         this.encoder = encoder;
     }
 
-    @GetMapping("/all")
-    public List<Person> findAll() {
-        return (List<Person>) this.personRepository.findAll();
+    @GetMapping("/")
+    public ResponseEntity<List<Person>> findAll() {
+        List<Person> personList = (List<Person>) this.personRepository.findAll();
+        return  ResponseEntity.ok(personList);
     }
 
     @GetMapping("/{id}")

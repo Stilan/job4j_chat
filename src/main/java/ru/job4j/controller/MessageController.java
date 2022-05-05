@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.job4j.model.Message;
 import ru.job4j.model.Person;
+import ru.job4j.model.Room;
 import ru.job4j.repository.MessageRepository;
 
 import java.util.List;
@@ -21,8 +22,9 @@ public class MessageController {
     }
 
     @GetMapping("/")
-    public List<Message> findAll() {
-        return (List<Message>) this.messageRepository.findAll();
+    public ResponseEntity<List<Message>> findAll() {
+        List<Message> messageList = (List<Message>) this.messageRepository.findAll();
+        return  ResponseEntity.ok(messageList);
     }
 
     @GetMapping("/{id}")

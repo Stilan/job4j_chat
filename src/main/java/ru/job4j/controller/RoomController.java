@@ -21,8 +21,9 @@ public class RoomController {
     }
 
     @GetMapping("/")
-    public List<Room> findAll() {
-        return (List<Room>) this.roomRepository.findAll();
+    public ResponseEntity<List<Room>> findAll() {
+        List<Room> roomList = (List<Room>) this.roomRepository.findAll();
+        return  ResponseEntity.ok(roomList);
     }
 
     @GetMapping("/{id}")
