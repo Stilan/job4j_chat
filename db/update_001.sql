@@ -28,7 +28,7 @@ create table person_rooms (
 );
 
 drop table message;
-select * from person;
+select * from roles;
 
 insert into person (name, password, role_id)
 values ('Petr', 'password', 1);
