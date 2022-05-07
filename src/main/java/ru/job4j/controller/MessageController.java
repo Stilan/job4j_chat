@@ -2,13 +2,16 @@ package ru.job4j.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.job4j.marker.Operation;
 import ru.job4j.model.Message;
 import ru.job4j.model.Person;
 import ru.job4j.model.Room;
 import ru.job4j.repository.MessageRepository;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +38,8 @@ public class MessageController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Message> create(@RequestBody Message message) {
+    @Validated(Operation.OnCreate.class)
+    public ResponseEntity<Message> create(@Valid @RequestBody Message message) {
         String strName = message.getName();
         if (strName == null) {
             throw new NullPointerException("Message mustn't be empty");
@@ -47,7 +51,7 @@ public class MessageController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Message message) {
+    public ResponseEntity<Void> update(@Valid @RequestBody Message message) {
         this.messageRepository.save(message);
         return ResponseEntity.ok().build();
     }

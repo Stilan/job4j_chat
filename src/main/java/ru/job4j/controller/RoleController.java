@@ -6,13 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.job4j.marker.Operation;
 import ru.job4j.model.Role;
 import ru.job4j.repository.RoleRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,7 +52,8 @@ public class RoleController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Role> create(@RequestBody Role role) {
+    @Validated(Operation.OnCreate.class)
+    public ResponseEntity<Role> create(@Valid @RequestBody Role role) {
         String name = role.getName();
         if (name == null) {
             throw new NullPointerException("Role mustn't be empty");
@@ -64,7 +68,7 @@ public class RoleController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Role role) {
+    public ResponseEntity<Void> update(@Valid  @RequestBody Role role) {
         this.roleRepository.save(role);
         return ResponseEntity.ok().build();
     }

@@ -3,11 +3,14 @@ package ru.job4j.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ru.job4j.marker.Operation;
 import ru.job4j.model.Room;
 import ru.job4j.repository.RoomRepository;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +38,8 @@ public class RoomController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Room> create(@RequestBody Room room) {
+    @Validated(Operation.OnCreate.class)
+    public ResponseEntity<Room> create(@Valid @RequestBody Room room) {
         String strName = room.getName();
         if (strName == null) {
             throw new NullPointerException("Room mustn't be empty");
@@ -47,7 +51,7 @@ public class RoomController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<Void> update(@RequestBody Room room) {
+    public ResponseEntity<Void> update(@Valid @RequestBody Room room) {
         this.roomRepository.save(room);
         return ResponseEntity.ok().build();
     }

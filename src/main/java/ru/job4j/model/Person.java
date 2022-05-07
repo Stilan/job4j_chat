@@ -2,6 +2,8 @@ package ru.job4j.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,7 +15,9 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Title must be not empty")
     private String name;
+    @NotBlank(message = "Title must be not empty")
     private String password;
 
     @ManyToOne

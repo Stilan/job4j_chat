@@ -1,8 +1,8 @@
 package ru.job4j.model;
 
-import org.springframework.http.HttpStatus;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "rooms")
@@ -11,6 +11,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Title must be not empty")
     private String message;
 
     public Room() {
