@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  db2:
+    image: postgres
+    container_name: db2
+    environment:
+      - POSTGRES_PASSWORD=QWE1243re
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=auth
+      - PGDATA=/var/lib/postgresql/data
+    volumes:
+      - ./db2/auth/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db2:5432/chat
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=QWE1243re
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db2
