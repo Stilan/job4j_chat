@@ -47,7 +47,7 @@ public class PersonController {
 
     @PostMapping("/sign-up")
     @Validated(Operation.OnCreate.class)
-    public ResponseEntity<Person> create(@Valid  @RequestBody Person person) {
+    public ResponseEntity<Person> create(@Valid @RequestBody Person person) {
         String strName = person.getName();
         if (strName == null) {
             throw new NullPointerException("Person mustn't be empty");
